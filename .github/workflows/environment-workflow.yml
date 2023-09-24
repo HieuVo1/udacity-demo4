@@ -4,7 +4,7 @@ on:
 env:
   NODE_VERSION: "18.x"
 
-Jobs:
+jobs:
   install-build-test:
     runs-on: ubuntu-latest
     steps:
