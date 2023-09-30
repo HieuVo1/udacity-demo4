@@ -1,0 +1,47 @@
+name: build and test cloudformation
+on:
+  workflow_dispatch:
+    inputs:
+      index_document:
+        description: "The index document"
+        required: true
+        default: "index.html"
+      error_document:
+        description: "The error document"
+        required: true
+        default: "error.html"
+
+env:
+  BUCKET_NAME: UdaBucket
+jobs:
+  install-build-test:
+    runs-on: ubuntu-latest
+    steps:
+      # Check out the code from the repository.
+      - uses: actions/checkout@v3
+
+      - name: Configure AWS Credential
+        uses: aws-actions/configure-aws-credentials@v2
+        with:
+          aws-access-key-id: ${{ secrets.AWS_API_KEY }}
+          aws-secret-access-key: ${{ secrets.AWS_API_SECRET }}
+          aws-session-token: ${{ secrets.AWS_TOKEN }}
+          aws-region: us-east-1
+
+      - name: Create CloudFormation Stack
+        uses: aws-actions/aws-cloudformation-github-deploy@v1
+        with:
+          name: udatest
+          template: udatest.yml
+          no-fail-on-empty-changeset: "1"
+
+      - name: Upload file to S3 Bucket
+        run: |
+          aws s3 cp ./website/${{ github.event.inputs.index_document}} s3://${{env.BUCKET_NAME}}
+          aws s3 cp ./website/${{ github.event.inputs.error_document}} s3://${{env.BUCKET_NAME}}
+      - name: Show s3 bucket website URL
+        run: |
+          aws cloudformation describe-stacks \
+            --stack-name udatest \
+            -- query 'Stacks[0].Outputs[?OutputKey==`UdaBucketWebsiteURL`].OutputValue' \
+            --output text
