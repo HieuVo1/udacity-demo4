@@ -12,7 +12,7 @@ on:
         default: "error.html"
 
 env:
-  BUCKET_NAME: UdaBucket
+  BUCKET_NAME: uda-iye-bucket
 jobs:
   install-build-test:
     runs-on: ubuntu-latest
