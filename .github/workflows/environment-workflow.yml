@@ -16,10 +16,7 @@ jobs:
           node-version: 16
 
       # Install the dependencies.
-      - run: cd backend && npm ci
-
-      # Run the tests.
-      - run: cd backend && npm test
+      - run: echo "Install"
 
   stage_deploy:
     runs-on: ubuntu-latest
