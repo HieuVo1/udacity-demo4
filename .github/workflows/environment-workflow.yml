@@ -33,9 +33,9 @@ jobs:
     runs-on: ubuntu-latest
     needs: stage_deploy
     environment:
-      name: staging
+      name: production
 
     steps:
       - name: Deploy to Production
         run: |
-          echo "Production to staging"
+          echo "Deploy to Production"
