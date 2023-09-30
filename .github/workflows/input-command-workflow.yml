@@ -39,8 +39,8 @@ jobs:
 
       - name: Upload file to S3 Bucket
         run: |
-          aws s3 cp ./${{ github.event.inputs.index_document}} s3://${{env.BUCKET_NAME}}
-          aws s3 cp ./${{ github.event.inputs.error_document}} s3://${{env.BUCKET_NAME}}
+          aws s3 cp ./website/${{ github.event.inputs.index_document}} s3://${{env.BUCKET_NAME}}
+          aws s3 cp ./website/${{ github.event.inputs.error_document}} s3://${{env.BUCKET_NAME}}
       - name: Show s3 bucket website URL
         run: |
           aws cloudformation describe-stacks \
